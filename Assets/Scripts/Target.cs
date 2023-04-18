@@ -4,49 +4,58 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody targetRb;
+    private GameManager gameManager;
 
-    private float minSpeed = 112;
-    private float maxSpeed = 116;
-    private float maxTorque = 110;
-    private float xRange = 14;
-    private float ySpawnPos = -12;
+    private float minSpeed = 12;
+    private float maxSpeed = 16;
+    private float maxTorque = 1;
+    private float xRange = 4;
+    private float ySpawnPos = -6;
 
-    Vector3 RandomForce()
-    {
-        return Vector3.up * Random.Range(0, maxSpeed);
-    }
-
-    float RandomTorque()
-    {
-        return Random.Range(0, maxTorque);
-    }
-
-    Vector3 RandomSpawnPos()
-    {
-        return new Vector3(Random.Range(-xRange, 1), ySpawnPos);
-    }
+    public int pointValue;
+    public ParticleSystem explosionParticle;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
-        rb.AddForce(RandomTorque(), ForceMode.Impulse);
-        rb.AddTorque(RandomTorque(), 0, RandomTorque(), ForceMode.Impulse);
-        transform.position = RandomSpawnPos()
+        targetRb = GetComponent<Rigidbody>();
+        targetRb.AddForce(RandomForce(), ForceMode.Impulse);
+        targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
+        transform.position = RandomSpawnPos();
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
+    {
 
-    private void OnMouseDown ()
+    }
+
+    private void OnMouseDown()
     {
         Destroy(gameObject);
+        Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+        gameManager.UpdateScore(pointValue);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        Destroy(gameObject);
+    }
+
+    Vector3 RandomForce()
+    {
+        return Vector3.up * Random.Range(minSpeed, maxSpeed);
+    }
+
+    float RandomTorque()
+    {
+        return Random.Range(-maxTorque, maxTorque);
+    }
+
+    Vector3 RandomSpawnPos()
+    {
+        return new Vector3(Random.Range(-xRange, xRange), ySpawnPos);
     }
 }

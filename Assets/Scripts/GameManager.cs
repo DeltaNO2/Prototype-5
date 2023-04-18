@@ -1,29 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameObject> targetsCatalogue;
-    private float spawnRate = 1f;
-    private float elaspedTime = 0f;
+    private float spawnRate = 1.0f;
+    private int score;
 
+    public List<GameObject> targets;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(SpawnTarget());
+        UpdateScore(0);
+    }
 
-    void Start(){}
-
-
+    // Update is called once per frame
     void Update()
     {
-        elaspedTime += Time.deltaTime;
-        if(elaspedTime > spawnRate){
-            SpawnNewCrate();
-            elapsedTime = 0;
+
+    }
+
+    IEnumerator SpawnTarget()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnRate);
+            Instantiate(targets[index]);
+
+            UpdateScore(5);
         }
     }
 
-    void SpawnNewCrate(){
-        int index = Random.Range(0, targetsCatalogue.Count);
-        Instantiate(targetsCatalogue[index]);
+    private void UpdateScore(int scoreToAdd)
+    {
+        score = scoreToAdd;
+        scoreText.text = "Score: " + score;
     }
 }
