@@ -14,7 +14,7 @@ public class TargetX : MonoBehaviour
     private float minValueX = -3.75f; // the x value of the center of the left-most square
     private float minValueY = -3.75f; // the y value of the center of the bottom-most square
     private float spaceBetweenSquares = 2.5f; // the distance between the centers of squares on the game board
-    
+
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class TargetX : MonoBehaviour
     }
 
     // When target is clicked, destroy it, update score, and generate explosion
-    private void OnMouseEnter()
+    private void OnMouseDown()
     {
         if (gameManagerX.isGameActive)
         {
@@ -35,7 +35,7 @@ public class TargetX : MonoBehaviour
             gameManagerX.UpdateScore(pointValue);
             Explode();
         }
-               
+
     }
 
     // Generate a random spawn position based on a random index from 0 to 3
